@@ -12,7 +12,8 @@ config.capabilities = [{
     'appium:deviceName': 'Emulator-5554',
     'appium:platformVersion': '11.0',
     'appium:automationName': 'UiAutomator2',
-    "appium:app": path.join(process.cwd(), "app\\android\\base.apk")
+    "appium:app": path.join(process.cwd(), "app\\android\\base.apk"),
+    //"appium:automationName": "Flutter"
 }]
 
 // config.capabilities = [{

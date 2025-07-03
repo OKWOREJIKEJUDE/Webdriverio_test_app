@@ -2,6 +2,7 @@ const path  = require('path')
 const {config} =  require('./wdio.shared.conf')
 
 config.port = 4723;
+//config.runner = 'local'
 config.specs = [
     './test/specs_s/**/*.js',
 ]

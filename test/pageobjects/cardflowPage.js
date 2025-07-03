@@ -261,6 +261,10 @@ class CardPage {
         await browser.pause(2000)
         await this.backIcon.click()
     }
+
+    async verifyAlreadyFrozenCard() {
+        
+    }
 }
 
 module.exports = new CardPage();

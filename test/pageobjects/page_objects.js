@@ -494,7 +494,6 @@ class PageObjects {
         await buyCable.click()
     }
 
-
 }
 
 
