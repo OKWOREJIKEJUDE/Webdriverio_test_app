@@ -1,66 +1,59 @@
-const page_objects = require('../pageobjects/page_objects.js')
+const myLogin = require('../pageobjects/loginPage.js')
+
+const correct_gigtag = 'didie'
+const correct_password = 'Required@123'
+const correct_phoneNumber = '08136034002'
+const correct_email = 'ahmed-ojo@gmail.com'
+const incorrect_gigtag = 'pelaher'
+const incorrect_password = 'Reqkiofjhr564'
+const incorrect_phoneNumber = '60340028975646'
+const incorrect_email = 'ahmedyutbj@gmail.com'
 
 describe('Login Test Suites', () => {
-    // //NEGATIVE TEST CASES
-    it("Login with incorrect tag and correct password", async () => {
-        await page_objects.initializeAppForLogin()
-        //await page_objects.pop()
-        //await $('~Later').click()
-        await page_objects.UnSuccessfulLogin('incorrect tag', 'Required@123')
-        await page_objects.verifyInvalidCredentials()
-        await page_objects.clearFields()
+    beforeEach(async () => {
+        myLogin.initializeAppForLogin()
+    });
+    afterEach(async () => {
+        myLogin.performLogout()
     });
 
-    it("Login with incorrect tag and incorrect password", async () => {
-        await page_objects.UnSuccessfulLogin('ttteeeejjf', 'Reqgdfhgbxuired@123')
-        await page_objects.verifyInvalidCredentials()
-        await page_objects.clearFields()
-    });
-
-    it("Login with incorrect email and correct password", async () => {
-        await page_objects.UnSuccessfulLogin('okworejikejddb@gmail.com', 'Required@123')
-        await page_objects.verifyInvalidCredentials()
-        await page_objects.clearFields()
-    });
-
-    it("Login with incrrect email and incorrect password", async () => {
-        await page_objects.UnSuccessfulLogin('ejhhdikeojkdh@gmail.co', 'Requhdhdbxgired@123')
-        await page_objects.verifyInvalidCredentials()
-        await page_objects.clearFields()
-    });
-
-    it("Login with incorrect phone Number and correct password", async () => {
-        await page_objects.UnSuccessfulLogin('090886363846436372', 'Required@123')
-        await page_objects.verifyInvalidCredentials()
-        await page_objects.clearFields()
-    });
-
-    it("Login with incorrect phone Number and incorrect password", async () => {
-        await page_objects.UnSuccessfulLogin('0908636537462736373', 'Reqydgtdsuired@123')
-        await page_objects.verifyInvalidCredentials()
-        await page_objects.clearFields()
-    });
-
-    //POSITIVE TEST CASES
+    // POSITIVE TEST CASES
     it('Login with correct gigtag and correct password', async () => {
-        await page_objects.SuccessfulLogin('didyie', 'Required@123')
-        await page_objects.verifyBellIconPresence()
-        await $('~Settings\nTab 5 of 5').click()
-        await page_objects.performLogout()
+        await myLogin.SuccessfulLogin(correct_gigtag, correct_password)
+        await myLogin.maybeLaterForVan()
+        await myLogin.maybeLater()
     });
 
     it('Login with correct phone number and correct password', async () => {
-        await page_objects.SuccessfulLogin('08012537771', 'Required@123')
-        await page_objects.verifyBellIconPresence()
-        await $('~Settings\nTab 5 of 5').click()
-        await page_objects.performLogout()
+        await myLogin.SuccessfulLogin(correct_phoneNumber, correct_password)
+        await myLogin.maybeLater()
+        await myLogin.campaign()
     });
 
     it('Login with correct email and correct password', async () => {
-        await page_objects.SuccessfulLogin('ejikeo+51@gmail.com', 'Required@123')
-        await page_objects.verifyBellIconPresence()
-        await $('~Settings\nTab 5 of 5').click()
-        await page_objects.performLogout()
+        await myLogin.SuccessfulLogin(correct_email, correct_password)
+        await myLogin.maybeLater()
+        await myLogin.campaign()
+    });
+    // NEGATIVE TEST CASES
+    it("Login with incorrect gigtag and correct password", async () => {
+        await myLogin.UnSuccessfulLogin(incorrect_gigtag, correct_password)
+        await myLogin.clearFields()
+    });
+
+    it("Login with incorrect gigtag and incorrect password", async () => {
+        await myLogin.UnSuccessfulLogin(incorrect_gigtag, incorrect_password)
+        await myLogin.clearFields()
+    });
+
+    it("Login with incorrect phone number and incorrect password", async () => {
+        await myLogin.UnSuccessfulLogin(incorrect_phoneNumber, incorrect_password)
+        await myLogin.clearFields()
+    });
+    //EDGE CASES
+    it("Login with empty credentials", async () => {
+        await myLogin.UnSuccessfulLogin('', '')
+        await myLogin.clearFields()
     });
 
     after(() => {

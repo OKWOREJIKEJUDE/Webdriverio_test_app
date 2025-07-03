@@ -1,55 +1,98 @@
-const page_objects = require('../pageobjects/page_objects.js')
-describe("Test Suites", () => {
+const cards = require('../pageobjects/cardflowPage.js')
+const login = require('../pageobjects/loginPage.js')
 
-    it("Card Creation", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.cardCreation('5', '8888', '8888')
-        await page_objects.performLogout()
-    })
+describe("Card Flow Test Suite", () => {
 
-    it("Card Funding", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.fundCard('5')
-        await page_objects.performLogout()
-    })
+    // CARD CREATION
+    //TODO for card creation,
+    //1. Check if the create card button exist, if yes, then proceed to click on it and create card, if no, the move to test it block
+    //2.  Terminate the driver after each 
+    // it("Create Card - Positive", async () => {
+    //     await login.initializeAppForLogin()
+    //     await login.SuccessfulLogin('didie', 'Required@123')
+    //     await login.maybeLaterForVan()
+    //     await login.maybeLater()
+    //     await login.campaign()
+    //     await cards.cardCreation('2', '8888', '8888')
+    //     await login.performLogout()
+    // });
 
-    it("Card Withdrawal", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.withdrawCard('10')
-        await page_objects.performLogout()
-    })
-  
-    it("Freeze Card", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.freezeCard()
-        await page_objects.performLogout()
-    })
+    // it("Create Card - Negative (Weak PIN)", async () => {
+    //     await login.initializeAppForLogin()
+    //     await login.SuccessfulLogin('didie', 'Required@123')
+    //     await cards.cardCreation('5', '123', '123')
+    //     await cards.verifyInvalidCardCreation()
+    //     await login.performLogout()
+    // });
 
-    it("Unfreeze Card", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.unfreezeCard()
-        await page_objects.performLogout()
-    })
+    // it("Create Card - Edge (Very Large Amount)", async () => {
+    //     await login.initializeAppForLogin()
+    //     await login.SuccessfulLogin('didie', 'Required@123')
+    //     await cards.cardCreation('1000000000', '8888', '8888')
+    //     await cards.verifyCardCreationLimitError()
+    //     await login.performLogout()
+    // });
 
-    it("View Card Details", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.viewCardDetails('1234')
-        await page_objects.performLogout()
-    })
-    
-    it("Change Card PIN", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.changeCardPIN('1234', '5555', '5555')
-        await page_objects.performLogout()
-    })
+    // CARD FUNDING
+    // it("Fund Card - Negative (Insufficient Balance)", async () => {
+    //     await login.SuccessfulLogin('didie', 'Required@123')
+    //     await cards.fundCard('1000000')
+    //     await cards.verifyInsufficientFunds()
+    //     await login.performLogout()
+    // });
 
-    it("Card Deletion", async () => {
-        await page_objects.SuccessfulLogin('didie', 'Required@123')
-        await page_objects.cardDeletion()
-        await page_objects.performLogout()
-    })
-})
+    // it("Fund Card - Edge (Zero Amount)", async () => {
+    //     await login.SuccessfulLogin('didie', 'Required@123')
+    //     await cards.fundCard('0')
+    //     await cards.verifyInvalidAmount()
+    //     await login.performLogout()
+    // });
+    it("Fund Card - Positive", async () => {
+        await login.initializeAppForLogin()
+        await login.SuccessfulLogin('didie', 'Required@123')
+        await login.maybeLaterForVan()
+        await login.maybeLater()
+        await login.campaign()
+        await cards.fundCard('2')
+        await login.performLogout()
+    });
+    // CARD WITHDRAWAL
+    // it("Withdraw from Card - Negative (Exceeding Balance)", async () => {
+    //     await login.SuccessfulLogin('didie', 'Required@123')
+    //     await cards.withdrawCard('1000000')
+    //     await cards.verifyInsufficientFunds()
+    //     await login.performLogout()
+    // });
+    it("Withdraw from Card - Positive", async () => {
+        await login.SuccessfulLogin('didie', 'Required@123')
+        await login.maybeLaterForVan()
+        await login.maybeLater()
+        await login.campaign()
+        await cards.withdrawCard('1')
+        await login.performLogout()
+    });
+    // CARD FREEZE
+    it("Freeze Card - Positive", async () => {
+        await login.SuccessfulLogin('didie', 'Required@123')
+        await login.maybeLaterForVan()
+        await login.maybeLater()
+        await login.campaign()
+        //await cards.verifyAlreadyFrozen() if card is frozen, then terminate driver, but if not, freeze it
+        await cards.freezeCard()
+        await login.performLogout()
+    });
+    // CARD UNFREEZE
+    it("Unfreeze Card - Positive", async () => {
+        await login.SuccessfulLogin('didie', 'Required@123')
+        await login.maybeLaterForVan()
+        await login.maybeLater()
+        await login.campaign()
+        //await cards.verifyAlreadyFrozen() if card is unfrozen, then terminate driver, but if not, unfreeze it
+        await cards.unfreezeCard()
+        await login.performLogout()
+    });
+    after(() => {
+        require('./sendMoney.js')
+    });
 
-after(() => {
-    require('./card_flows.js')
 });

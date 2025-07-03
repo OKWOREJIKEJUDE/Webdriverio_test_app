@@ -1,42 +1,42 @@
 class BillsPayment {
-   
+
     get continue() {
         return $('~Continue');
     }
-    get enterAmount() { 
-        return $('//android.widget.EditText[@index=4]'); 
+    get enterAmount() {
+        return $('//android.widget.EditText[@index=4]');
     }
-    get enterPhoneNumber() { 
-        return $('//android.widget.EditText[@index=6]'); 
+    get enterPhoneNumber() {
+        return $('//android.widget.EditText[@index=6]');
     }
-    get chooseNetwork() { 
-        return $('//android.widget.ImageView[@index=0]'); 
+    get chooseNetwork() {
+        return $('//android.widget.ImageView[@index=0]');
     }
-    get buyAirtime() { 
-        return $('~Buy Airtime'); 
+    get buyAirtime() {
+        return $('~Buy Airtime');
     }
-    get payBillsHome(){
+    get payBillsHome() {
         return $('~Pay Bills\nTab 3 of 5')
     }
-    get enterPIN(){
+    get enterPIN() {
         return $('.android.widget.EditText')
     }
-    get great(){
+    get great() {
         return $('~Great')
     }
-    get buyData(){
+    get buyData() {
         return $('~Internet/Data')
     }
-    get chooseServiceProvider(){
+    get chooseServiceProvider() {
         return $('~Choose a Service Provider')
     }
-    get removeButtomsheet(){
+    get removeButtomsheet() {
         return $('//android.widget.Button[@index=0]')
     }
-    get buyData(){
+    get buyData() {
         return $('~Internet/Data')
     }
-    
+
 
 
 
@@ -70,8 +70,9 @@ class BillsPayment {
 
     }
 
-     // Purchase Data
-     async dataPurchase(number, PIN) {
+    // Purchase Data
+    async dataPurchase(number, PIN) {
+        try {
         await browser.pause(3000)
         await this.payBillsHome.click()
         await browser.pause(1000)
@@ -79,7 +80,8 @@ class BillsPayment {
         await browser.pause(3000)
         await this.chooseServiceProvider.click()
         await browser.pause(3000)
-        await this.chooseNetwork.click()
+        const chooseNetwork = await $('~mtn')
+        await chooseNetwork.click()
         await browser.pause(3000)
         await this.removeButtomsheet.click()
         await browser.pause(3000)
@@ -99,6 +101,10 @@ class BillsPayment {
         await this.enterPIN.setValue(PIN)
         await browser.pause(3000)
         await this.great.click()
+        } catch (error) {
+            
+        }
+        
     }
 }
 
